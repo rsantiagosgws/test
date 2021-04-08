@@ -1,0 +1,373 @@
+openapi: 3.0.1
+info:
+  title: User Profile API
+  description: 
+    "SGWS Implementation of User Profile list and creation.<br><br>
+    
+    **Authentication:**<br>
+    The authentication scheme used is *Oauth2*. A <mark><i>Bearer token</i></mark> is required in the Authorization header. This is obtained by first doing a POST HTTP call to the *Oauth2 API* at <https://qa1.bapi.southernglazers.com/oauth/client_credential/accesstoken?grant_type=client_credentials>. The token will be returned as part of the response body. Note the *Oauth2 API* first requires an API <mark><i>key-secret</i></mark> combination that will be passed as *Basic Authentication*.<br><br>
+    
+    The API *key-secret* combination can be obtained from the <a href=https://dev-portal.bapi.southernglazers.com/ target=_blank>`developer portal`</a> at <https://dev-portal.bapi.southernglazers.com>. Access is acquired by first signing up for an account under the <a href=https://dev-portal.bapi.southernglazers.com/accounts/create target=_blank>`Sign in / Create account`</a> link. When access is granted, go to the <a href=https://dev-portal.bapi.southernglazers.com/my-apps target=_blank>`Apps`</a> section and create a new app by clicking on the <a href=https://dev-portal.bapi.southernglazers.com/my-apps/new-app target=_blank>`+NEW APP`</a> link and request access to the <a href=https://dev-portal.bapi.southernglazers.com/docs/userprofile-product/1/overview target=_blank>`UserProfile API/product`</a>. <u>When the request is approved, the API <mark><i>key-secret</i></mark> will be available under the new App.</u><br><br>
+    
+    **Response Headers and examples:**<br>
+    <small>
+    X-Transaction-Id &emsp;&emsp;&emsp;&nbsp; Transaction ID &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; rrt-1787402127206237329-d-gea1-29130-19755427-1<br>
+    X-Issued-At &emsp;&emsp;&emsp;&emsp;&emsp;&ensp; Token issued timestamp &emsp;&emsp; 2021-03-24T00:26:09.436Z<br>
+    X-Expires-In &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; Seconds until token expiry &ensp;&nbsp; 1396<br>
+    X-RateLimit-Limit &emsp;&emsp;&emsp; Quota limit &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 100<br>
+    X-RateLimit-Remaining &nbsp; Quota remaining &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; 54<br>
+    X-RateLimit-Reset &emsp;&emsp;&ensp; Quota next reset timestamp &nbsp; 2021-03-24T01:03:40.623Z
+    </small>"
+
+  termsOfService: https://www.southernglazers.com/terms/
+  contact:
+    email: apisupport@sgws.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://qa1.bapi.southernglazers.com/userprofile
+#- url: https://dv1.bapi.southernglazers.com/userprofile
+security:
+  - OAuth2Auth: []
+tags:
+- name: list
+  description: List User Profiles
+- name: users
+  description: Create User Profiles
+paths:
+  /v1/list/iseries:
+    get:
+      tags:
+      - "list"
+      summary: List Iseries User Profiles
+      responses:
+        200:
+          description: Successful Response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListIseriesResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        503:
+          $ref: '#/components/responses/ServerError'
+  /v1/list/wmi:
+    get:
+      tags:
+      - "list"
+      summary: List WMI User Profiles
+      responses:
+        200:
+          description: Successful Response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListWmiResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        503:
+          $ref: '#/components/responses/ServerError'
+  /v1/list/sapphire:
+    get:
+      tags:
+      - "list"
+      summary: List Sapphire User Profiles
+      responses:
+        200:
+          description: Successful Response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSapphireResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        503:
+          $ref: '#/components/responses/ServerError'
+  /v1/users/iseries:
+    post:
+      tags:
+      - "users"
+      summary: Create Iseries User Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersIseriesRequest"
+      responses:
+        200:
+          description: Successful Response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        503:
+          $ref: '#/components/responses/ServerError'
+  /v1/users/wmi:
+    post:
+      tags:
+      - "users"
+      summary: Create WMI User Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersWmiRequest"
+      responses:
+        200:
+          description: Successful Response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        503:
+          $ref: '#/components/responses/ServerError'
+  /v1/users/sapphire:
+    post:
+      tags:
+      - "users"
+      summary: Create Sapphire User Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersSapphireRequest"
+      responses:
+        200:
+          description: Successful Response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        503:
+          $ref: '#/components/responses/ServerError'
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized. Provide valid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServerError:
+      description: ServerError
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ListIseriesResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+            example: "LJAMES"
+          status:
+            type: string
+            example: "active"
+          daysBeforePasswordExpires:
+            type: number
+            example: 25
+          textIncludingEmployeeId:
+            type: string
+            example: "dummy text"
+          creationDate:
+            type: number
+            example: 20210321
+          createdByUser:
+            type: string
+            example: "KDURANT"
+          lastUsedDate:
+            type: number
+            example: 20210131
+          specialAuthorities: 
+            type: string
+            example: "admin"
+          groupProfile:
+            type: string
+            example: "QPGMR"
+    ListWmiResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          warehouseIdSiteId:
+            type: number
+            example: 25
+          employeeId:
+            type: string
+            example: "LJAMES"
+          userDepartment:
+            type: string
+            example: "Accounting"
+          menuId:
+            type: string
+            example: "Main"
+          logonUserId:
+            type: string
+            example: "LJAMES1"
+          shiftId:
+            type: string
+            example: "Night"
+          wmiUsername:
+            type: string
+            example: "LJAMES2"
+    ListSapphireResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+            example: "LJAMES"
+          status:
+            type: string
+            example: "active"
+          daysBeforePasswordExpires:
+            type: number
+            example: 25
+          text:
+            type: string
+            example: "dummy text"
+          creationDate:
+            type: number
+            example: 20210321
+          createdByUser:
+            type: string
+            example: "KDURANT"
+          specialAuthorities: 
+            type: string
+            example: "admin"
+          groupProfile:
+            type: string
+            example: "QPGMR"
+    UsersIseriesRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+            example: "LJAMES"
+          status:
+            type: string
+            example: "active"
+          textIncludingEmployeeId:
+            type: string
+            example: "dummy text"
+          specialAuthorities: 
+            type: string
+            example: "admin"
+          groupProfile:
+            type: string
+            example: "QPGMR"
+    UsersWmiRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          warehouseIdSiteId:
+            type: number
+            example: 25
+          username:
+            type: string
+            example: "LJAMES"
+          employeeId:
+            type: number
+            example: 43765
+          userDepartment:
+            type: string
+            example: "Accounting"
+          menuId:
+            type: string
+            example: "Main"
+          logonUserId:
+            type: string
+            example: "LJAMES1"
+          shiftId:
+            type: string
+            example: "Night"
+          function:
+            type: string
+            example: "admin"
+          date:
+            type: number
+            example: 20210323
+          wmiUsername:
+            type: string
+            example: "LJAMES2"
+    UsersSapphireRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+            example: "LJAMES"
+          status:
+            type: string
+            example: "active"
+          text:
+            type: string
+            example: "dummy text"
+          specialAuthorities: 
+            type: string
+            example: "admin"
+          groupProfile:
+            type: string
+            example: "QPGMR"
+    UsersResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Account Successfully Created."
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "Error Code here"
+        error:
+          type: string
+          example: "Error Message here"
+  securitySchemes:
+    OAuth2Auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://qa1.bapi.southernglazers.com/oauthx/client_credential/accesstoken?grant_type=client_credentials
+          scopes: {}
