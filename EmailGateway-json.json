@@ -1,0 +1,372 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Email gateway",
+    "description": "Send request to Email Gateway.<br><br>\n**Authentication:**<br> The authentication scheme used is *Oauth2*. A <mark><i>Bearer token</i></mark> is required in the Authorization header. This is obtained by first doing a POST HTTP call to the *Oauth2 API* at <https://qa1.bapi.southernglazers.com/oauth/client_credential/accesstoken?grant_type=client_credentials>. The token will be returned as part of the response body. Note the *Oauth2 API* first requires an API <mark><i>key-secret</i></mark> combination that will be passed as *Basic Authentication*.<br><br>\nThe API *key-secret* combination can be obtained from the <a href=https://dev-portal.bapi.southernglazers.com/ target=_blank>`developer portal`</a> at <https://dev-portal.bapi.southernglazers.com>. Access is acquired by first signing up for an account under the <a href=https://dev-portal.bapi.southernglazers.com/accounts/create target=_blank>`Sign in / Create account`</a> link. When access is granted, go to the <a href=https://dev-portal.bapi.southernglazers.com/my-apps target=_blank>`Apps`</a> section and create a new app by clicking on the <a href=https://dev-portal.bapi.southernglazers.com/my-apps/new-app target=_blank>`+NEW APP`</a> link and request access to the <a href=https://dev-portal.bapi.southernglazers.com/docs/userprofile-product/1/overview target=_blank>`EmailGateway-product`</a>. <u>When the request is approved, the API <mark><i>key-secret</i></mark> will be available under the new App.</u><br><br>\n**Response Headers and examples:**<br> <small> X-Transaction-Id &emsp;&emsp;&emsp;&nbsp; Transaction ID &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; rrt-1787402127206237329-d-gea1-29130-19755427-1<br> X-Issued-At &emsp;&emsp;&emsp;&emsp;&emsp;&ensp; Token issued timestamp &emsp;&emsp; 2021-03-24T00:26:09.436Z<br> X-Expires-In &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; Seconds until token expiry &ensp;&nbsp; 1396<br> X-RateLimit-Limit &emsp;&emsp;&emsp; Quota limit &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 100<br> X-RateLimit-Remaining &nbsp; Quota remaining &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; 54<br> X-RateLimit-Reset &emsp;&emsp;&ensp; Quota next reset timestamp &nbsp; 2021-03-24T01:03:40.623Z </small>",
+    "termsOfService": "https://www.southernglazers.com/terms/",
+    "contact": {
+      "email": "apisupport@sgws.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://qa1.bapi.southernglazers.com/emailgateway"
+    }
+  ],
+  "security": [
+    {
+      "OAuth2Auth": []
+    }
+  ],
+  "paths": {
+    "/v1/useraccountinformation": {
+      "post": {
+        "summary": "Retrieve User Account Information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userAccountInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userAccountInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/v1/marketingcloud": {
+      "post": {
+        "summary": "Marketing Cloud",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/marketingCloudRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/marketingCloudResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "NotFound": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized. Provide valid credentials.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "ServerError",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "userAccountInfoRequest": {
+        "type": "object",
+        "description": "User Account Information Request",
+        "properties": {
+          "account": {
+            "type": "string",
+            "example": "00010029358",
+            "description": "account"
+          },
+          "OrderID": {
+            "type": "string",
+            "example": "12345",
+            "description": "OrderID"
+          },
+          "OrdSubt": {
+            "type": "string",
+            "example": "$500.00",
+            "description": "OrdSubt"
+          },
+          "OrdDis": {
+            "type": "string",
+            "example": "$50.00",
+            "description": "OrdDis"
+          },
+          "OrdTF": {
+            "type": "string",
+            "example": "$0.00",
+            "description": "OrdTF"
+          },
+          "OrdTot": {
+            "type": "string",
+            "example": "$450.00",
+            "description": "OrdTot"
+          },
+          "OrdAddr": {
+            "type": "string",
+            "example": "abcccc",
+            "description": "OrdAddr"
+          },
+          "OrdDelDate": {
+            "type": "string",
+            "example": "11/20/2020",
+            "description": "OrdDelDate"
+          },
+          "OrdNote": {
+            "type": "string",
+            "example": "3pm",
+            "description": "OrdNote"
+          },
+          "OrdItm": {
+            "type": "string",
+            "example": "JMBrbon",
+            "description": "OrdItm"
+          }
+        }
+      },
+      "userAccountInfoResponse": {
+        "type": "object",
+        "description": "User Account Information Response",
+        "properties": {
+          "recipients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "to": {
+                  "type": "string",
+                  "example": "mask162636@mailinator.com",
+                  "description": "To Email Address"
+                },
+                "messageKey": {
+                  "type": "string",
+                  "example": "003i000002V8jy9AAB1621016465204",
+                  "description": "Message Key"
+                },
+                "contactKey": {
+                  "type": "string",
+                  "example": "003i000002V8jy9AAB",
+                  "description": "Message Key"
+                },
+                "attributes": {
+                  "type": "object",
+                  "description": "Attributes",
+                  "properties": {
+                    "LName": {
+                      "type": "string",
+                      "example": "Mosely"
+                    },
+                    "FName": {
+                      "type": "string",
+                      "example": "Kim"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "definitionKey": {
+            "type": "string",
+            "example": "Test_Trans_Email_JD_8",
+            "description": "Defnition Key"
+          }
+        }
+      },
+      "marketingCloudRequest": {
+        "type": "object",
+        "description": "Marketing Cloud Request",
+        "properties": {
+          "account": {
+            "type": "string",
+            "example": "00010029358",
+            "description": "account"
+          },
+          "OrderID": {
+            "type": "string",
+            "example": "12345",
+            "description": "OrderID"
+          },
+          "OrdSubt": {
+            "type": "string",
+            "example": "$500.00",
+            "description": "OrdSubt"
+          },
+          "OrdDis": {
+            "type": "string",
+            "example": "$50.00",
+            "description": "OrdDis"
+          },
+          "OrdTF": {
+            "type": "string",
+            "example": "$0.00",
+            "description": "OrdTF"
+          },
+          "OrdTot": {
+            "type": "string",
+            "example": "$450.00",
+            "description": "OrdTot"
+          },
+          "OrdAddr": {
+            "type": "string",
+            "example": "abcccc",
+            "description": "OrdAddr"
+          },
+          "OrdDelDate": {
+            "type": "string",
+            "example": "11/20/2020",
+            "description": "OrdDelDate"
+          },
+          "OrdNote": {
+            "type": "string",
+            "example": "3pm",
+            "description": "OrdNote"
+          },
+          "OrdItm": {
+            "type": "string",
+            "example": "JMBrbon",
+            "description": "OrdItm"
+          }
+        }
+      },
+      "marketingCloudResponse": {
+        "type": "object",
+        "description": "Marketing Cloud Response",
+        "properties": {
+          "recipients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "to": {
+                  "type": "string",
+                  "example": "mask162636@mailinator.com",
+                  "description": "To Email Address"
+                },
+                "messageKey": {
+                  "type": "string",
+                  "example": "003i000002V8jy9AAB1621016465204",
+                  "description": "Message Key"
+                },
+                "contactKey": {
+                  "type": "string",
+                  "example": "003i000002V8jy9AAB",
+                  "description": "Message Key"
+                },
+                "attributes": {
+                  "type": "object",
+                  "description": "Attributes",
+                  "properties": {
+                    "LName": {
+                      "type": "string",
+                      "example": "Mosely"
+                    },
+                    "FName": {
+                      "type": "string",
+                      "example": "Kim"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "definitionKey": {
+            "type": "string",
+            "example": "Test_Trans_Email_JD_8",
+            "description": "Defnition Key"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errorMsg": {
+            "type": "string",
+            "example": "Error Message here"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2Auth": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://qa1.bapi.southernglazers.com/oauth/client_credential/accesstoken?grant_type=client_credentials",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}
